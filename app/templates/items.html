@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Items</h1>
+    <form action="/items" method="post">
+        <input type="text" name="ean" placeholder="EAN" required>
+        <input type="text" name="name" placeholder="Name" required>
+        <input type="text" name="detail" placeholder="Detail">
+        <input type="text" name="quantity" placeholder="Quantity">
+        <input type="text" name="unit" placeholder="Unit">
+        <button type="submit">Add Item</button>
+    </form>
+    <ul id="items">
+        {% for item in items %}
+            <li>
+                <form action="/items/{{ item.ean }}/update" method="post">
+                    <svg class="barcode"
+                         jsbarcode-format="auto"
+                         jsbarcode-value="{{ item.ean }}"
+                         jsbarcode-textmargin="0"
+                         jsbarcode-fontoptions="bold"
+                         jsbarcode-fontsize="12"
+                         jsbarcode-height="40"
+                         jsbarcode-width="1"
+                         jsbarcode-margin="0"
+                    ></svg>
+                    <input type="hidden" name="ean" value="{{ item.ean }}">
+                    <input type="text" name="name" value="{{ item.name }}">
+                    <input type="text" name="detail" value="{{ item.detail }}">
+                    <input type="text" name="quantity" value="{{ item.quantity }}">
+                    <input type="text" name="unit" value="{{ item.unit }}">
+                    <button type="submit">Update</button>
+                </form>
+                <form action="/items/{{ item.ean }}/delete" method="post" style="display:inline;">
+                    <button type="submit">Delete</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
